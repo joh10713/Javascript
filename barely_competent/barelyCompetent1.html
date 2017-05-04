@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Jeremy's guide to becoming a barely competent web developer part 1</title>
+        <!--This title will show up when opened in the browser-->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+        <!--This is the semantic ui's css library. It's coming from a cdn which means it's hosted on some server and we don't have to call it locally-->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <!--
+            We'll also go ahead and bring in jquery's library. It's useful in handling events on the page
+            This is how you bring in javascript files into your html pages
+        -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
+        <!--
+            This is semantic ui's javascript library which has to be called after we get jQuery because it uses it
+            Go ahead and run this in your browser and make sure the files are coming in with chrome's developer tools
+        -->
+        
+        <style>
+		/*testing stuff*/
+            /*you can also write css inside of style tags like this*/
+            /*An id attribute ("#") is assigned to one html element*/
+            #app {
+                /*This selects a specific thing with an id of app and applies this css to it (which centers the element)*/
+                margin: auto;
+                width: 50%;
+                padding-top: 10%;
+                /*
+                    Padding is used to space elements out. If you go to the elements tab of chrome's developer tools,
+                    you can highlight elements on the page. Padding is highlighted in green
+                */
+            }
+            
+            /*A field attribute (".") can be assigned to multiple html element*/
+            .field {
+                /*This selects multiple things with a class of field and applies css to them*/
+                text-align: center;
+                padding-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <!--
+                Divs and spans are used to wrap html elements. Spans are inline
+                The id tag is unique and allows us to select one particular element
+            -->
+            <i id="light_icon" class="idea icon" state="off" style="padding-left:46%;font-size:100px;opacity:0.5;"></i>
+            <!--
+                This will put a flash icon on the page. The class attribute can be applied to multiple items. 
+                Right now, the bootstrap css will make anyting with that class name a lamp icon as long as it is in an icon tag (<i></i>)
+            -->
+            <form id="switches" class="ui one column stackable center aligned form">
+                <!--
+                    This is an html form to handle user input. Typically, inputs are wrapped in
+                    form tags so that all input can be processed at once by the server when submitted
+                    however, form tags aren't always necessary
+                -->
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input id="light_switch" type="checkbox" name="switch">
+                        <!--
+                            The value of this input tag is sent to the server when a form is submitted.
+                            The value will be associated with the name given to the tag.
+                            There are also many other types of inputs, including text, radio and range inputs
+                        -->
+                        <label for="light_switch">On/Off</label>
+                        <!--
+                            The for attribute of this label tag is the same as the id of the input it is referring to.
+                            This linking is especially useful for helping blind people navigate the site with a screen reader
+                        -->
+                    </div>
+                </div>
+                <!--
+                    You don't have to wrap your inputs inside divs. This is just how semantic ui
+                    wants you to write forms
+                -->
+                <div class="field">
+                    <div class="ui buttons">
+                        <button type="button" class="ui icon button" id="plus"><i class="plus icon"></i></button>
+                        <button type="button" class="ui icon button" id="minus"><i class="minus icon"></i></button>
+                        <!--
+                            We should have used a div instead of a form, because we need to tell these buttons they're buttons
+                            with the type="button" attribute to prevent the page from submitting
+                        -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+    
+    <script>
+        //you can also write javascript right onto the page like this.
+        
+        var light_icon = document.getElementById("light_icon")
+        /* 
+            This is how you declare a variable in javascript.
+            Right now, we are using this selector statement
+            to get the lightbulb icon so we can do things to it
+        */
+        
+        //you can also define this function as var changeColor = function () { ...
+        function changeColor () {
+            var state = light_icon.getAttribute("state"); 
+            /*
+                Semicolons are optional
+                State is not a typical attribute of icons, but we added it anyway,
+                Which is why we use the getAttribute method associated with it
+            */
+            
+            if (state == "off") {
+                light_icon.setAttribute("state", "on") //set state (because it isn't a real attribute)
+                light_icon.style.color = "yellow" //however, style.color is a valid attribute
+            } else {
+                light_icon.setAttribute("state", "off")
+                light_icon.style.color = "" //get rid of color
+            }
+            
+            console.log(light_icon.getAttribute("state")) //print the state of the light to the developer console
+        }
+        
+        document.getElementById("light_switch").onclick = changeColor
+        //this registers the changeColor function to run whenever the light_switch is clicked
+        
+        //however, it is easier to use the jQuery library to register events
+        /*
+            this jQuery statement selects something with the id "plus" and tells it to
+            run an anonymous function whenever it is clicked
+        */
+        
+        $("#plus").click(function () {
+            //note the '' to create a string
+            if (light_icon.getAttribute("state") == 'on') {
+                var opacity = Number(light_icon.style.opacity) //opacity is a string, so we cast to number
+                light_icon.style.opacity = String(opacity + .1) //and then cast to string again
+            }
+        })
+        
+        //we can also use the .on event, which is more broad in use
+        $("#minus").on("click", function () {
+            //note the === to check for equality
+            if (light_icon.getAttribute("state") === "on") {
+                light_icon.style.opacity = String(Number(light_icon.style.opacity) - .1)
+            }
+        })
+        
+        /*
+            ok, so once you understand this code, try to modify it
+            so a user can change the color of the light when it is turned on
+            (look up the range slider input type and the css rgb property to get started)
+        */
+    </script>
+</html>

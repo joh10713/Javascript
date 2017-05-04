@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Color Picker Solution</title>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
+        <style>
+            #app {
+                margin: auto;
+                width: 50%;
+                padding-top: 10%;
+            }
+            
+            .field {
+                text-align:center;
+                padding-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <i id="light_icon" class="idea icon" state="off" red="255" green="255" blue="0" style="padding-left:46%;font-size:100px;opacity:0.5;"></i>
+            <!--I added red. green, and blue attributes to the icon to serve as state variables-->
+            <form id="switches" class="ui one column stackable center aligned form">
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input id="light_switch" type="checkbox" name="switch">
+                        <label for="light_switch">On/Off</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui buttons">
+                        <button type="button" class="ui icon button" id="plus"><i class="plus icon"></i></button>
+                        <button type="button" class="ui icon button" id="minus"><i class="minus icon"></i></button>
+                    </div>
+                </div>
+                <div class="field">
+                    <!--
+                        These range inputs allow a user to input a value for
+                        how red, green, and blue the light color will be.
+                        Then we'll take the value and use rgb(R,G,B) to set the icon's color
+                    -->
+                    <label for="red">Red</label>
+                    <input class="color_slider" type="range" color="red" max="255" min="0" value="255">
+                    <!--
+                        Yellow has a value of rgb(255,255,0), so we set the default value of red to 255
+                        and make sure the user can only input values between 0 and 255 (range for any R, G or B)
+                    -->
+                    <label for="green">Green</label>
+                    <input class="color_slider" type="range" color="green" max="255" min="0" value="255">
+                    <label for="blue">Blue</label>
+                    <input class="color_slider" type="range" color="blue" max="255" min="0" value="0">
+                </div>
+            </form>
+        </div>
+    </body>
+    
+    <script>
+    
+        var light_icon = document.getElementById("light_icon")
+        
+        function illuminate () {
+            //the red, green, and blue state variables are stored as strings
+            var red = light_icon.getAttribute("red")
+            var green = light_icon.getAttribute("green")
+            var blue = light_icon.getAttribute("blue")
+                
+            //It's good that they're strings because we can just append them to set the css rgb value
+            light_icon.style.color = "rgb(" + red + "," + green + "," + blue + ")"
+        }
+        
+        $("#light_switch").click(function () {
+            var state = light_icon.getAttribute("state")
+            
+            if (state === "off") {
+                light_icon.setAttribute("state", "on")
+                illuminate()
+            } else {
+                light_icon.setAttribute("state", "off")
+                light_icon.style.color = ""
+            }
+        })
+        
+        $("#plus").click(function () {
+            if (light_icon.getAttribute("state") === "on") {
+                var opacity = Number(light_icon.style.opacity)
+                light_icon.style.opacity = String(opacity + .1)
+            }
+        })
+        
+        $("#minus").click(function () {
+            if (light_icon.getAttribute("state") === "on") {
+                light_icon.style.opacity = String(Number(light_icon.style.opacity) - .1)
+            }
+        })
+        
+        //instead of selecting the individual sliders, we can just select a class and figure out which slider it is
+        $(".color_slider").change(function () {
+            //the "this" keyword is referring to the element being changed (the slider)
+            var color = this.getAttribute("color")
+            var intensity = String(this.value) //range sliders have values as numbers, so we have to cast to a string
+            
+            light_icon.setAttribute(color, intensity)
+            
+            if (light_icon.getAttribute("state") === "on") {
+                //change the color immediately if the light switch is on
+                illuminate()
+            }
+        })
+    </script>
+</html>

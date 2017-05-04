@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+            This file will serve as a catalyst for all of our views. We just have to serve this file
+            and then use our app.js as an api to send back data instead of entire html pages
+        -->
+        <title>Shitpost.io</title>
+        
+        <!--From CDN:-->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
+        <!--We'll use vue.js as a framework to handle dynamic views and display data from the api-->
+        <script src="https://unpkg.com/vue"></script>
+        <!--
+            We'll also use this library to help with ajax calls to the server.
+            Essentially, it'll send and recieve JSON objects to and from the server 
+            and then we'll render their information dynamically with Vue
+        -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        
+        <style>
+            #app {
+                padding-top: 10%;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <div id="app" class="ui one column centered grid">
+            <div class="twelve wide column">
+                <div class="ui feed">
+                    <!--
+                        Message is a custom vue.js component that we define. It will find this html tag,
+                        then insert dynamically rendered html in that tag
+                    -->
+                    <message
+                        v-for="message in messages"
+                        v-bind:message="message"
+                        v-bind:edit_message="edit_message"
+                        v-bind:delete_message="delete_message"
+                    ></message>
+                    <!--
+                        Vue.js allows for loops to render multiple components. We are going to make a message tag
+                        for every message in the messages array in the vue app (down below), and then bind
+                        properties that are defined in the vue app to the component
+                    -->
+                </div>
+            </div>
+            <div class="twelve wide column">
+                <div class="ui fluid action input">
+                    <input type="text" state="new" id="message_text" placeholder="Message">
+                    <div class="ui button" v-on:click="submit_message">Submit</div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            //vue.js code
+            Vue.component('message', {
+                props: ['message', 'edit_message', 'delete_message'],
+                //props are objects or functions that the component is allowed to call from the vue app
+                //The template is an html string that is rendered dynamically by vue and will change automatically when its properties change
+                template: ' \
+                <div class="event"> \
+                    <div class="content">{{ message.text }}</div> \
+                    <div class="meta"> \
+                        <div class="ui buttons">\
+                            <button class="ui icon button" v-on:click=edit_message(message._id)><i class="edit icon"></i></button> \
+                            <button class="ui icon button" v-on:click=delete_message(message._id)><i class="delete icon"></i></button> \
+                        </div>\
+                    </div> \
+                </div> \
+                '
+                /*
+                    The message is an object inside the messages array that is defined in the vue app.
+                    We can render its information outside of vue html specific properties through handlebar "{{ }}" syntax
+                    The v-on:click property is vue specific, and binds a function in the vue app to fire when the button is clicked
+                */
+            })
+            
+            /*
+                At this point, the component doesn't even know that the vue app exists and is a standalone class.
+                This is why we have to pass in props to it to link the app to the component
+            */
+            
+            var app = new Vue({
+                el: '#app', //bind our vue app to a div with id app
+                //run this created function whenever the page is loaded
+                created: function () {
+                    //in javascript, we can set variables to functions
+                    var get_messages = this.get_messages
+                    //this function is defined in the methods section of the app
+                    
+                    get_messages()
+                    //first, call get_messages()
+                    
+                    setInterval(function () {
+                        get_messages()
+                    }, 5000)
+                    //then every 5 seconds, call it again to refresh the messages from the database to the page
+                },
+                data: {
+                    messages: []
+                    /*
+                        messages will be an array of objects which we specified in our message schema in app.js
+                        Each of those messages will have a _id property, a text proprety, and a created property
+                        Vue.js will display info from this array and accomadate changes to it in real time
+                    */
+                },
+                methods: {
+                    submit_message: function () {
+                        var textField = document.getElementById("message_text")
+                        
+                        if (textField.getAttribute("state") === "update") {
+                            //we'll give the text field a state attribute to know if we're updating a message or making a new one
+                            axios.put('/update_message/' + textField.getAttribute("message"), {
+                                /*
+                                    This function executes a put request to the server.
+                                    The route for that inside of app.js is 'app.put("/update_message/:id"...'
+                                    The id parameter will be unique to the message
+                                    In this case, it is the id of the message in the database,
+                                    which we set as a message attribute in the text box
+                                */
+                                text: textField.value
+                            })
+                            .then(function (res) {
+                                $.grep(this.app.messages,
+                                    function (e) {
+                                        return e._id === textField.getAttribute("message") 
+                                    }
+                                )[0].text = res.data.text
+                                //This code (from stack overflow) will find the message that was updated and set it's text property to the new message
+                                textField.value = ""
+                                textField.setAttribute("state", "new")
+                                textField.removeAttribute("message")
+                                //set the field's states back for a new message
+                            })
+                            .catch(function (err) {
+                                console.log(err)
+                            })
+                        } else {
+                            /*
+                                This function will execute a post request to the server to add a new message to the database
+                                It will send a request to the post_message route in app.js (app.post("/post_message"...)
+                            */
+                            axios.post('/post_message', {
+                                text: textField.value
+                                /* 
+                                    Send a JSON object with the text set to the value of the text field
+                                    We don't necessarily have to fill in all the fields to add to our database
+                                */
+                            })
+                            .then(function (res) {
+                                this.app.messages.push(res.data)
+                                /*
+                                    The api will send back a JSON of the new document in the database.
+                                    We take that object, and add it to the messages array, which will display it immediately
+                                */
+                                textField.value = ""
+                            })
+                            .catch(function (err) {
+                                console.log(err)
+                            })
+                        }
+                    },
+                    get_messages: function () {
+                        //This function executes a get request to the server, which returns an array of all messages
+                        axios.get('/get_messages')
+                        .then(function (res) {
+                            this.app.messages = res.data
+                            //with that incoming data, set the messages array to it
+                        })
+                        .catch(function (err) {
+                            console.log(err)
+                        })
+                    },
+                    edit_message: function (id) {
+                        var messageIndex = this.messages.findIndex(e => e._id === id)
+                        //search messages for one with a matching _id parameter. This code is from stack overflow
+                        //You'll get good at finding code to copy and paste (even if you know how to do it)
+                        
+                        var textField = document.getElementById("message_text")
+                        textField.value = this.messages[messageIndex].text
+                        textField.setAttribute("state", "update")
+                        textField.setAttribute("message", this.messages[messageIndex]._id)
+                    },
+                    delete_message: function (id) {
+                        axios.delete('/delete_message/' + id)
+                        .then(function (res) {
+                            this.app.get_messages()
+                            //another way to get rid of the message on the page is to just refresh the page
+                        })
+                        .catch(function (err) {
+                            console.log(err)
+                        })
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
