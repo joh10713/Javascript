@@ -71,6 +71,14 @@
                         -->
                     </div>
                 </div>
+				<div class="field">
+					<label for="red_slider">Red</label>
+					<input  type=range id="red_slider" value="255" min="0" max="255">
+					<label for="green_slider">Green</label>
+					<input  type=range id="green_slider" value="255" min="0" max="255">
+					<label for="blue_slider">Blue</label>
+					<input  type=range id="blue_slider" value="0" min="0" max="255">
+				</div>
                 <!--
                     You don't have to wrap your inputs inside divs. This is just how semantic ui
                     wants you to write forms
@@ -93,6 +101,10 @@
         //you can also write javascript right onto the page like this.
         
         var light_icon = document.getElementById("light_icon")
+		var red="255"
+		var green="255"
+		var blue="0"
+		var color = "rgb("+red+","+green+","+blue+")"
         /* 
             This is how you declare a variable in javascript.
             Right now, we are using this selector statement
@@ -102,6 +114,7 @@
         //you can also define this function as var changeColor = function () { ...
         function changeColor () {
             var state = light_icon.getAttribute("state"); 
+			console.log()
             /*
                 Semicolons are optional
                 State is not a typical attribute of icons, but we added it anyway,
@@ -110,7 +123,7 @@
             
             if (state == "off") {
                 light_icon.setAttribute("state", "on") //set state (because it isn't a real attribute)
-                light_icon.style.color = "yellow" //however, style.color is a valid attribute
+                light_icon.style.color = color //however, style.color is a valid attribute
             } else {
                 light_icon.setAttribute("state", "off")
                 light_icon.style.color = "" //get rid of color
@@ -143,7 +156,19 @@
                 light_icon.style.opacity = String(Number(light_icon.style.opacity) - .1)
             }
         })
-        
+        $("#red_slider").on("change",function () {
+		 red=this.value
+         color = "rgb("+red+","+green+","+blue+")" 
+        })
+		$("#green_slider").on("change",function () {
+         green=this.value
+         color = "rgb("+red+","+green+","+blue+")"
+        })
+		$("#blue_slider").on("change",function () {
+         blue=this.value
+         color = "rgb("+red+","+green+","+blue+")"
+            
+        })
         /*
             ok, so once you understand this code, try to modify it
             so a user can change the color of the light when it is turned on
