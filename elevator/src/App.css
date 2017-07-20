@@ -1,0 +1,151 @@
+.App {
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  font-family: "Open Sans", Arial;
+}
+
+.datePicker {
+  width: 20%;
+
+}
+
+.tag {
+  background-color: blue;
+  color: white;
+  margin: 2px;
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+.tagInputFieldClass {
+  display: inline-block;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.sidebarContainer {
+  background-color: rgb(225, 225, 225);
+}
+
+.elevatorElement {
+  background-color: white;
+}
+
+.panel-body {
+  background-color: rgb(225, 225, 225);
+
+}
+
+.sidePanel {
+  position: fixed;
+  background-color: white;
+}
+
+.sidePanel div.panel-body {
+  margin: 0px;
+}
+
+.listitem {
+  width: 100%;
+  display: inline-block;
+  padding: 10px 15px 10px 5px;;
+  color: blue;
+  text-decoration: none;
+}
+
+.listitem:hover {
+  text-decoration: none;
+  background-color: rgb(225, 225, 225);
+}
+
+ul {
+  list-style: none outside none;
+  padding-left: 0px;
+  margin: 0px;
+}
+
+.activelink {
+  background-color: rgb(225, 225, 225);
+  width: 100%;
+  transition: background-color 1s;
+}
+
+.activelink a {
+   color: black;
+
+}
+.activelink a:hover {
+  background-color: rgb(225, 225, 225);
+}
+
+.elevatorElementList {
+  height: 100%;
+  width: 100%;
+}
+
+.scrollingItems {
+  margin-bottom: 100%;
+}
+
+.textbox {
+  width: 90%;
+}
+
+p {
+  padding: 5px;
+  display: inline-block;
+}
+
+.panel {
+  background-color: white;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.panel-body {
+    background-color: white;
+}
+
+.main {
+  background-color: rgb(225, 225, 225);
+}
+
+.plusButton {
+  text-align: right;
+}
+
+.input {
+  display: inline-block;
+}
+
+input, select {
+  border-radius: 5px;
+}
+
+.formcontrol
+{
+  margin: 10px;
+}

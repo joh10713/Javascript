@@ -9,20 +9,47 @@ ol, ul {
 
 .board-row:after {
   clear: both;
+  display: table;
+
+}
+
+.bigboard-row:after {
+  clear: both;
   content: "";
   display: table;
+
 }
 
 .status {
-  margin-bottom: 10px;
+	font-family: sans-serif;
+	margin: 10px;
+	width: 100px;
+	text-align: center;
 }
 
-.square {
+.square-x {
   background: #fff;
-  border: 1px solid #999;
+  border: 1px solid black;
   float: left;
   font-size: 24px;
   font-weight: bold;
+  color: red;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+.square-o {
+  background: #fff;
+  border: 1px solid black;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  color: blue;
   line-height: 34px;
   height: 34px;
   margin-right: -1px;
@@ -40,11 +67,57 @@ ol, ul {
   background: #ddd;
 }
 
-.game {
-  display: flex;
-  flex-direction: row;
+.board-n {
+  float: left;
+  padding: 20px;
+  border: 2px solid black;
 }
 
-.game-info {
-  margin-left: 20px;
+.board-x {
+  background: red;
+  float: left;
+  padding: 20px;
+  border: 2px solid black;
 }
+
+.board-o {
+  background: blue;
+  float: left;
+  padding: 20px;
+  border: 2px solid black;
+}
+
+.board-l {
+  background: purple;
+  float: left;
+  padding: 20px;
+  border: 2px solid black;
+}
+
+.reset {
+	background-color: white;
+	border: 2px solid black;
+	border-radius: 10px;
+	font-family: sans-serif;
+}
+
+.test2 {
+	width: 429px;
+	
+}
+
+.navbar {
+	height: 50px;
+	width: 75%;
+	border: 2px solid black;
+	font-family: sans-serif;
+	font-size: 40px;
+	font-style: bold;
+}
+
+.page {
+	width: 1000px;
+	height: 1000px;
+	border: 2px solid black;
+}
+

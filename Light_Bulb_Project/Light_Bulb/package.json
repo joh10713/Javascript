@@ -1,5 +1,5 @@
 {
-  "name": "shitpost.io",
+  "name": "post.io",
   "version": "1.0.0",
   "description": "Simple chatroom app to teach basic Node.js and MongoDB",
   "main": "app.js",
