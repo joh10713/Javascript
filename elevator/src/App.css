@@ -61,24 +61,25 @@
 
 .sidePanel {
   position: fixed;
+  width: inherit;
   background-color: white;
 }
 
-.sidePanel div.panel-body {
-  margin: 0px;
+.previewSummary {
+  text-align: left;
+  margin-left: 20px;
 }
 
 .listitem {
-  width: 100%;
   display: inline-block;
-  padding: 10px 15px 10px 5px;;
+  padding: 10px 15px 10px 0px;
   color: blue;
   text-decoration: none;
 }
 
 .listitem:hover {
   text-decoration: none;
-  background-color: rgb(225, 225, 225);
+  background-color: rgb(250, 250, 250);
 }
 
 ul {
@@ -86,6 +87,8 @@ ul {
   padding-left: 0px;
   margin: 0px;
 }
+
+
 
 .activelink {
   background-color: rgb(225, 225, 225);
@@ -99,6 +102,8 @@ ul {
 }
 .activelink a:hover {
   background-color: rgb(225, 225, 225);
+  width: 100%;
+  transition: background-color 1s;
 }
 
 .elevatorElementList {

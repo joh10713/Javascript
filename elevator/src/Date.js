@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Panel, FormControl, FormGroup, Form, HelpBlock, ControlLabel, Radio} from "react-bootstrap";
+import { Button, Panel, FormControl, FormGroup, Form, HelpBlock, ControlLabel, Radio, Col} from "react-bootstrap";
 import "./App.css";
 var moment = require('moment');
 
@@ -138,7 +138,7 @@ class DateWidget extends Component {
 
     return (<Panel header={header} footer={footer}>
               {[...Array(this.state.dict.length)].map((x, i) =>
-                <div className="elevatorElement" key={i}>
+                <Col xsOffset={1} xs={11} className="elevatorElement" key={i}>
                   <div>
 
                     <Form inline>
@@ -176,7 +176,7 @@ class DateWidget extends Component {
                     <Radio inline onChange={handleChange.bind(this, i)} checked={this.state.dict[i].isPrimary}>
                       <p>Primary Entry</p></Radio>
                   </FormGroup>)}
-                </div>
+                </Col>
               )}
             </Panel>
     );

@@ -10,7 +10,7 @@ class Map extends Component {
         onClick={this.props.mapHandleClick}
         defaultZoom={4}
         defaultCenter={{ lat: 44.9742, lng: -93.234200 }}>
-          <Marker onDragEnd={this.props.mapHandleClick} draggable={true} position={this.props.marker} />
+          <Marker onDragEnd={this.props.mapHandleClick} draggable={true} position={this.props.show ? this.props.marker : null} />
       </GoogleMap>
     );
   }

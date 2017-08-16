@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Panel, Form, FormGroup, FormControl, Checkbox, ControlLabel } from "react-bootstrap"
+import { Panel, Form, FormGroup, FormControl, Checkbox, ControlLabel, Col } from "react-bootstrap"
 import DatePicker from "react-bootstrap-date-picker"
 import "./App.css";
 
@@ -38,9 +38,9 @@ class General extends Component{
     }
 
     var handleDateSubmit = function(event) {
-      this.props.getState("availableAfter", event.target.value);
+      this.props.getState("availableAfter", event);
       this.setState ({
-        readyForDisplay: event.target.value,
+        availableAfter: event,
       });
     }
 
@@ -76,7 +76,7 @@ class General extends Component{
     var options = findOption(collections, allowedCollections, "", []);
   return (
     <Panel header=" " footer=" ">
-      <div className="elevatorElement">
+      <Col xsOffset={1} xs={11} className="elevatorElement">
         <p>Object id: uhhhh</p><br/>
 
         <Form inline>
@@ -101,7 +101,7 @@ class General extends Component{
         </FormGroup>
 
         <p>Available After: </p><DatePicker style={{width: '25%', display: 'inline-block'}} showClearButton={false} value={this.state.availableAfter} onChange={handleDateSubmit.bind(this)}/>
-      </div>
+      </Col>
     </Panel>
   );
   }

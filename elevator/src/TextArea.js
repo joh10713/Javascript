@@ -1,7 +1,7 @@
 /*Use TinyMCE*/
 
 import React, { Component } from "react";
-import { Button, Panel, Radio, FormGroup } from "react-bootstrap";
+import { Button, Panel, Radio, FormGroup, Col } from "react-bootstrap";
 import TinyMCE from "react-tinymce";
 import "./App.css";
 
@@ -78,10 +78,10 @@ class TextArea extends Component {
                       onBlur={this.handleEditorChange.bind(this, i)}
                     />
                     {(this.state.dict.length > 1) &&
-                    (<FormGroup>
+                    (<Col xsOffset={1} xs={11}><FormGroup>
                       <Radio inline onChange={handleChange.bind(this, i)} checked={this.state.dict[i].isPrimary}>
                         <p>Primary Entry</p></Radio>
-                    </FormGroup>)}
+                    </FormGroup></Col>)}
                   </div>
                 )}
     </Panel>

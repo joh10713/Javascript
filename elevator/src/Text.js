@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Panel, Form, FormGroup, FormControl, ControlLabel, Radio } from "react-bootstrap";
+import { Button, Panel, Form, FormGroup, FormControl, ControlLabel, Radio, Col } from "react-bootstrap";
 import "./App.css";
 
 class Text extends Component {
@@ -66,11 +66,11 @@ class Text extends Component {
 
     return (<Panel header={header} footer={footer}>
               {[...Array(this.state.dict.length)].map((x, i) =>
-                <div className="elevatorElement" key={i}>
-                  <Form inline>
+                <Col xsOffset={1} xs={11} className="elevatorElement" key={i}>
+                  <Form inline onSubmit={(event) => event.preventDefault() }>
                     <FormGroup>
                       <ControlLabel>{this.props.data.label}</ControlLabel>
-                      <FormControl className='formcontrol' type="text" defaultValue={this.state.dict[i].fieldContents} onBlur={handleSubmit.bind(this,i)} placeholder={this.props.data.label} />
+                      <FormControl className='formcontrol' type="text" defaultValue={this.state.dict[i].fieldContents}  onBlur={handleSubmit.bind(this,i)} placeholder={this.props.data.label} />
                     </FormGroup>
                   </Form>
 
@@ -79,7 +79,7 @@ class Text extends Component {
                     <Radio inline onChange={handleChange.bind(this, i)} checked={this.state.dict[i].isPrimary}>
                       <p>Primary Entry</p></Radio>
                   </FormGroup>)}
-                </div>
+                </Col>
       				)}
             </Panel>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Panel, Checkbox, FormGroup, Radio } from "react-bootstrap";
+import { Button, Panel, Checkbox, FormGroup, Radio, Col } from "react-bootstrap";
 import "./App.css";
 
 class CheckboxWidget extends Component {
@@ -64,7 +64,7 @@ class CheckboxWidget extends Component {
 
     return (<Panel header={header} footer={footer}>
               {[...Array(this.state.dict.length)].map((x, i) =>
-                <div key={i} className="elevatorElement">
+                <Col xsOffset={1} xs={11} key={i} className="elevatorElement">
 
                   <FormGroup>
                     <Checkbox onChange={checkboxHandleChange.bind(this, i)} checked={this.state.dict[i].fieldContents} inline>{this.props.data.label}</Checkbox>
@@ -75,7 +75,7 @@ class CheckboxWidget extends Component {
                       <Radio inline onChange={handleChange.bind(this, i)} checked={this.state.dict[i].isPrimary}>
                         <p>Primary Entry</p></Radio>
                     </FormGroup>)}
-                </div>
+                </Col>
       				)}
             </Panel>
     );

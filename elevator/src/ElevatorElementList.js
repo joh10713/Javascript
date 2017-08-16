@@ -15,7 +15,7 @@ import Upload from './Upload';
 //import axios from 'axios';
 import "./App.css";
 
-class ElevatorElementsList extends Component {
+class ElevatorElementList extends Component {
   constructor(props) {
     super(props);
     if(props.fillIn)
@@ -41,17 +41,35 @@ class ElevatorElementsList extends Component {
       dict: dict,
     });
     console.log(JSON.stringify(this.state, null, 2));
+    console.log(window);
   }
 
-  /*componentDidMount() {
-    var url = "http://dev.elevator.umn.edu/defaultinstance/asset/viewAsset/595667b7ba98a8cd386f9381/true";
-		axios.get(url).then((response) => {
-      console.log(response);
-			this.setState({
-				dict: response,
-      })
-		})
-  }*/
+  handleWindowClose(){
+    alert(window);
+  }
+
+  listener(event) {
+    console.log(event);
+    console.log("message recieved");
+  }
+
+  componentDidMount() {
+      window.parent.parent.postMessage("hello", "*");
+      window.addEventListener('onbeforeunload', this.handleWindowClose);
+      window.addEventListener("message", this.listener, false);
+      console.log("listener added");
+      /*var url = "http://dev.elevator.umn.edu/defaultinstance/assetManager/getTemplate/44";
+  		axios.get(url).then((response) => {
+        console.log(response);
+  			this.setState({
+  				dict: response,
+        })
+  		})*/
+  }
+
+  componentWillUnmount() {
+      window.removeEventListener('onbeforeunload', this.handleWindowClose);
+  }
 
   render() {
 
@@ -95,29 +113,35 @@ class ElevatorElementsList extends Component {
     return (<div className="elevatorElementList">
 
                 <Col lg={2} md={1} smHidden xsHidden />
+
                 <Col lg={8} md={10} sm={12} xs={12}>
                   <div className="panel-body main">
-                    <Col lg={3} md={3} sm={3} xsHidden>
-                    <div className="sidePanel">
-                    <Button onClick={this.buttonHandleClick.bind(this)} bsStyle="success">Save</Button>
-                    <Scrollspy items={items} currentClassName="activelink">
-                      <li key="General"><a className='listitem' href={'#General'}>General</a></li>
-                      {[...Array(entries)].map((x, i) => (
-                        <li key={i}>
-                          <a className="listitem" href={"#" + encodeURI(this.props.data.widgetArray[i].label)}>{this.props.data.widgetArray[i].label}</a>
-                        </li>))}
-                    </Scrollspy>
-                    </div>
+                    <Col lg={2} md={2} sm={2} xsHidden>
+                      <div className="sidePanel">
+                      {[...Array(this.props.example.entries.length)].map((x, i) => (
+                        <div key={i} className="previewSummary"><h7><b>{this.props.example.entries[i].label}: </b>{this.props.example.entries[i].entries}</h7></div>
+                        ))}
+                      <Button onClick={this.buttonHandleClick.bind(this)} bsStyle="success">Save</Button>
+                      <Scrollspy items={items} currentClassName="activelink">
+                        <li key="General"><a className='listitem' href={'#General'}>General</a></li>
+                        {[...Array(entries)].map((x, i) => (
+                          <li key={i}>
+                            <a className="listitem" href={"#" + encodeURI(this.props.data.widgetArray[i].label)}>{this.props.data.widgetArray[i].label}</a>
+                          </li>))}
+                      </Scrollspy>
+                      </div>
                     </Col>
-                    <Col lg={9} md={9} sm={9} xs={12} className='scrollingItems'>
-                    <section id='General'><General getState={getState.bind(this)} collectionId={this.props.fillIn.collectionId} templateId={this.props.fillIn.templateId} readyForDisplay={this.props.fillIn.readyForDisplay} availableAfter={this.props.fillIn.availableAfter ? this.props.fillIn.availableAfter : ""} allowedCollections={this.props.data.allowedCollections} collections={this.props.data.collections} templates={this.props.data.templates ? this.props.data.templates : []}/></section>
-                  {[...Array(entries)].map((x, i) => (
-                    <section id={this.props.data.widgetArray[i].label} key={i}>
-                      {element(this.props.data.widgetArray[i], this.props.fillIn[this.props.data.widgetArray[i].fieldTitle], getState.bind(this))}
-                    </section>))}
-                  </Col>
+                    <Col lg={2} md={1} sm={1} xsHidden></Col>
+                    <Col lg={8} md={9} sm={9} xs={12} className='scrollingItems'>
+                      <section id='General'><General getState={getState.bind(this)} collectionId={this.props.fillIn.collectionId} templateId={this.props.fillIn.templateId} readyForDisplay={this.props.fillIn.readyForDisplay} availableAfter={this.props.fillIn.availableAfter ? this.props.fillIn.availableAfter : ""} allowedCollections={this.props.data.allowedCollections} collections={this.props.data.collections} templates={this.props.data.templates ? this.props.data.templates : []}/></section>
+                      {[...Array(entries)].map((x, i) => (
+                      <section id={this.props.data.widgetArray[i].label} key={i}>
+                        {element(this.props.data.widgetArray[i], this.props.fillIn[this.props.data.widgetArray[i].fieldTitle], getState.bind(this))}
+                      </section>))}
+                    </Col>
                   </div>
                 </Col>
+
                 <Col lg={2} md={1} smHidden xsHidden />
 
             </div>
@@ -125,4 +149,4 @@ class ElevatorElementsList extends Component {
   }
 }
 
-export default ElevatorElementsList;
+export default ElevatorElementList;

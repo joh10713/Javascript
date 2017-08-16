@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Panel, Form, FormGroup, FormControl, ControlLabel, Radio } from "react-bootstrap";
+import { Button, Panel, Form, FormGroup, FormControl, ControlLabel, Radio, Col } from "react-bootstrap";
 import "./App.css";
 
 class Upload extends Component {
@@ -74,7 +74,7 @@ class Upload extends Component {
 
     return (<Panel header={header} footer={footer}>
               {[...Array(this.state.dict.length)].map((x, i) =>
-                <div className="elevatorElement" key={i}>
+                <Col xsOffset={1} xs={11} className="elevatorElement" key={i}>
 
                   <Form inline>
                     <FormGroup>
@@ -84,7 +84,7 @@ class Upload extends Component {
 
                     <FormGroup>
                       <ControlLabel>Description </ControlLabel>
-                      <FormControl className='controllabel' type="text" ref={i} placeholder={this.props.data.label} onBlur={handleSubmit.bind(this, i, "description")}/>
+                      <FormControl className='formcontrol' type="text" ref={i} placeholder={this.props.data.label} onBlur={handleSubmit.bind(this, i, "description")}/>
                     </FormGroup>
                   </Form>
 
@@ -93,7 +93,7 @@ class Upload extends Component {
                     <Radio inline onChange={handleChange.bind(this, i)} checked={this.state.dict[i].isPrimary}>
                       <p>Primary Entry</p></Radio>
                   </FormGroup>)}
-                </div>
+                </Col>
       				)}
             </Panel>
     );
