@@ -58,6 +58,7 @@ class DateWidget extends Component {
     return "error";
 
   }
+
   parseDateString(dateString, dict) {
     if(moment(dateString).isValid())
     {
@@ -76,7 +77,7 @@ class DateWidget extends Component {
     }
     else {
       return "";
-    }
+  }
 
   }
   render() {

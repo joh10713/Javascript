@@ -13,7 +13,7 @@ class Page extends Component {
     var data = {"templateId":"53","templateName":"Related Asset Host","widgetArray":[{"widgetId":2145,"type":"text","allowMultiple":true,"attemptAutocomplete":false,"fieldTitle":"recordtitle_1","label":"Record Title","tooltip":"","fieldData":[]},{"widgetId":2146,"type":"related asset","allowMultiple":true,"attemptAutocomplete":true,"fieldTitle":"inlinerelatedasset_1","label":"Inline related asset","tooltip":"","fieldData":{"nestData":true,"showLabel":true,"displayInline":true,"thumbnailView":false,"defaultTemplate":54,"collapseNestedChildren":false}},{"widgetId":2147,"type":"related asset","allowMultiple":false,"attemptAutocomplete":true,"fieldTitle":"newwindowasset_1","label":"New Window Asset","tooltip":"","fieldData":{"nestData":true,"showLabel":true,"matchAgainst":[54,53],"displayInline":false,"thumbnailView":false,"defaultTemplate":54,"collapseNestedChildren":false}}],"collections":{"25":{"Blank Generation":{"28":"fades"}},"20":{"Collection two":{"23":"Test Collection"}},"29":"Date testing","1":"Initial Collection","26":"Lang Center New","24":"Language Center","40":"new test collection","35":"Obama Speeches","27":"really blank","41":"Speeches 2"},"allowedCollections":{"25":"Blank Generation","20":"Collection two","29":"Date testing","28":"fades","1":"Initial Collection","26":"Lang Center New","24":"Language Center","40":"new test collection","35":"Obama Speeches","27":"really blank","41":"Speeches 2","23":"Test Collection"}}
 
   return (
-    <div className='page' style={{height: "100%"}}>
+    <div className='App'>
       <ElevatorElementList data={data} fillIn={fillIn} example={example} nested={false}/>
     </div>
   );

@@ -1,7 +1,10 @@
+//The css is messy and the UI needs some work.
+
 .App {
   text-align: center;
   height: 100%;
   width: 100%;
+  background-color: black;
 }
 
 * {
@@ -11,6 +14,10 @@
 .datePicker {
   width: 20%;
 
+}
+
+body {
+  background-color: rgb(240, 240, 240);
 }
 
 .tag {
@@ -54,20 +61,17 @@
   background-color: white;
 }
 
-.panel-body {
-  background-color: rgb(225, 225, 225);
-
-}
-
 .sidePanel {
   position: fixed;
+  text-align: left;
   width: inherit;
   background-color: white;
+  height: 100%;
+  padding-left: 20px;
 }
 
 .previewSummary {
   text-align: left;
-  margin-left: 20px;
 }
 
 .listitem {
@@ -88,16 +92,16 @@ ul {
   margin: 0px;
 }
 
-
-
 .activelink {
   background-color: rgb(225, 225, 225);
   width: 100%;
+  margin-right: 20px;
   transition: background-color 1s;
 }
 
 .activelink a {
-   color: black;
+   color: rgb(130, 130, 130);
+   font-weight: bold;
 
 }
 .activelink a:hover {
@@ -106,13 +110,24 @@ ul {
   transition: background-color 1s;
 }
 
-.elevatorElementList {
+.page {
   height: 100%;
   width: 100%;
 }
 
+.button {
+  margin: 5px;
+}
+
+.elevatorElementList {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+}
+
 .scrollingItems {
   margin-bottom: 100%;
+  background-color: rgb(225, 225, 225);
 }
 
 .textbox {
@@ -150,7 +165,6 @@ input, select {
   border-radius: 5px;
 }
 
-.formcontrol
-{
+.formcontrol {
   margin: 10px;
 }

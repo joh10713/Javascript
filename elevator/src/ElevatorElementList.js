@@ -1,6 +1,8 @@
+// This component imports all of the widgets, organizes the widgets and passes the widgets the data they need.
+
 import React, { Component } from "react";
-import { Col, Button } from "react-bootstrap";
-import Scrollspy from "react-scrollspy";
+import { Col, Button } from "react-bootstrap";//documentation can be found here https://react-bootstrap.github.io/
+import Scrollspy from "react-scrollspy"; //Scrollspy enabled the sidebar to work. Documentation can be found here https://github.com/makotot/react-scrollspy
 import Text from "./Text";
 import CheckboxWidget from "./Checkbox";
 import DateWidget from "./Date";
@@ -31,7 +33,7 @@ class ElevatorElementList extends Component {
         data: null,
       }
     }
-  }
+  }//dict is the JSON object that will be sent back to the server when saved
 
   buttonHandleClick() {
     var time = new Date();
@@ -42,7 +44,7 @@ class ElevatorElementList extends Component {
     });
     console.log(JSON.stringify(this.state, null, 2));
     console.log(window);
-  }
+  }//This is the save buttons event handler. Right now it just outputs the JSON that would be sent to the server to the console.
 
   handleWindowClose(){
     alert(window);
@@ -54,22 +56,17 @@ class ElevatorElementList extends Component {
   }
 
   componentDidMount() {
-      window.parent.parent.postMessage("hello", "*");
+      window.parent.postMessage("hello", "*");
       window.addEventListener('onbeforeunload', this.handleWindowClose);
       window.addEventListener("message", this.listener, false);
       console.log("listener added");
-      /*var url = "http://dev.elevator.umn.edu/defaultinstance/assetManager/getTemplate/44";
-  		axios.get(url).then((response) => {
-        console.log(response);
-  			this.setState({
-  				dict: response,
-        })
-  		})*/
   }
 
   componentWillUnmount() {
       window.removeEventListener('onbeforeunload', this.handleWindowClose);
-  }
+  }/*The last four functions are the start of interwindow communication that is needed for the nested asset widget.
+    Hosting this locally I was never able to make the parent/child relationship to work correctly since I could only host one asset at
+    and as a result I cannot communicate between two different(a parent and a child) assets.*/
 
   render() {
 
@@ -79,7 +76,7 @@ class ElevatorElementList extends Component {
       this.setState ({
         dict: dict,
       });
-    }
+    }//This function is passed as a prop to child components and it allows them to pass information to this components to update the JSON information
 
     var element = function(data, fillIn, getState) {
       switch(data.type) {
@@ -96,7 +93,7 @@ class ElevatorElementList extends Component {
         case "related asset" :
           return <RelatedAsset getState={getState} data={data} fillIn={fillIn} options={["option1", "option2"]}/>;
         case "select" :
-          return <Select getState={getState} data={data} fillIn={fillIn}/>;//options={data.fieldData.selectGroup} are the options for select always going to be given to me in selectGroup
+          return <Select getState={getState} data={data} fillIn={fillIn}/>;
         case "tag list" :
           return <TagList getState={getState} data={data} fillIn={fillIn}/>;
         case "text area" :
@@ -106,43 +103,51 @@ class ElevatorElementList extends Component {
         default:
           return <h1>This should not happen</h1>;
       }
-    }
+    }//This function tells the render which widget to render and then passes the child component the data it needs.
 
     var entries = this.props.data.widgetArray.length;
     var items=["General"].concat([...Array(entries)].map((x, i)=>this.props.data.widgetArray[i].label));
-    return (<div className="elevatorElementList">
+    return (<div className="App">
 
-                <Col lg={2} md={1} smHidden xsHidden />
+                <Col lg={2} md={1} smHidden xsHidden />{/*space on the left*/}
 
-                <Col lg={8} md={10} sm={12} xs={12}>
-                  <div className="panel-body main">
-                    <Col lg={2} md={2} sm={2} xsHidden>
+                <Col lg={8} md={10} sm={12} xs={12}>{/*column that contains the sidebar and the widget list.*/}
+                  <div >
+
+                    <Col lg={2} md={2} sm={2} xs={2}>
                       <div className="sidePanel">
                       {[...Array(this.props.example.entries.length)].map((x, i) => (
                         <div key={i} className="previewSummary"><h7><b>{this.props.example.entries[i].label}: </b>{this.props.example.entries[i].entries}</h7></div>
-                        ))}
-                      <Button onClick={this.buttonHandleClick.bind(this)} bsStyle="success">Save</Button>
+                      ))}{/*This map lists the information that is supposed to be dislplayed in the preview of the elevator element.*/}
+
+                      <Button onClick={this.buttonHandleClick.bind(this)} className="button" bsStyle="primary">Save</Button>
+                      <Button className="button" bsStyle="info">View</Button>
+
                       <Scrollspy items={items} currentClassName="activelink">
                         <li key="General"><a className='listitem' href={'#General'}>General</a></li>
                         {[...Array(entries)].map((x, i) => (
                           <li key={i}>
                             <a className="listitem" href={"#" + encodeURI(this.props.data.widgetArray[i].label)}>{this.props.data.widgetArray[i].label}</a>
                           </li>))}
-                      </Scrollspy>
+                      </Scrollspy>{/*This is the sidebar.*/}
+
                       </div>
                     </Col>
-                    <Col lg={2} md={1} sm={1} xsHidden></Col>
-                    <Col lg={8} md={9} sm={9} xs={12} className='scrollingItems'>
+
+                    <Col lg={2} md={1} sm={1} xs={1}><div className='scrollingItems'></div></Col>{/*space in between the sidebar and the widget list*/}
+
+                    <Col lg={8} md={9} sm={9} xs={10} className='scrollingItems'>
                       <section id='General'><General getState={getState.bind(this)} collectionId={this.props.fillIn.collectionId} templateId={this.props.fillIn.templateId} readyForDisplay={this.props.fillIn.readyForDisplay} availableAfter={this.props.fillIn.availableAfter ? this.props.fillIn.availableAfter : ""} allowedCollections={this.props.data.allowedCollections} collections={this.props.data.collections} templates={this.props.data.templates ? this.props.data.templates : []}/></section>
                       {[...Array(entries)].map((x, i) => (
                       <section id={this.props.data.widgetArray[i].label} key={i}>
                         {element(this.props.data.widgetArray[i], this.props.fillIn[this.props.data.widgetArray[i].fieldTitle], getState.bind(this))}
                       </section>))}
-                    </Col>
+                    </Col>{/*The list of widgets.*/}
+
                   </div>
                 </Col>
 
-                <Col lg={2} md={1} smHidden xsHidden />
+                <Col lg={2} md={1} smHidden xsHidden />{/*space on the right*/}
 
             </div>
     );

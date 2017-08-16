@@ -42,7 +42,8 @@ class CheckboxWidget extends Component {
       this.setState ({
         dict: dict,
       });
-    }
+    }//updates state when checkboxes are checked/unchecked
+
     var handleChange = function(i) {
       var dict = this.state.dict;
       for(var j=0; j<dict.length; j++)
@@ -57,7 +58,7 @@ class CheckboxWidget extends Component {
         dict: dict,
       });
       this.props.getState(this.props.data.fieldTitle, dict);
-    }
+    }//updates when a radio button changes which checkbox is the primary checkbox
 
     var header = (<div>{this.props.data.label}{(this.props.data.tooltip !== "") ? " : " + this.props.data.tooltip : ""}<div className="plusButton">{(this.props.data.allowMultiple) && <Button style={{position: "relative", top: "-25px"}} onClick={this.handleClick}>+</Button>}</div></div>);
     var footer = (<div className="plusButton">{(this.props.data.allowMultiple) && <Button onClick={this.handleClick}>+</Button>}</div>);
